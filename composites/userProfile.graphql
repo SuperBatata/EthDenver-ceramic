@@ -1,0 +1,6 @@
+type userProfile
+  @createModel(accountRelation: SINGLE, description: "A Profile for a user") {
+  username: String! @string(minLength: 5, maxLength: 255)
+  description: String @string(minLength: 3, maxLength: 100)
+  hundle: String @string(minLength: 3, maxLength: 50)
+}
