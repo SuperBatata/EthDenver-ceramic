@@ -11,7 +11,7 @@ export const Sidebar = ({ hundle, username, id }: SidebarProps) => {
       <div className="top">
         <Link href={`/profile`}>
           <a>
-            <FaUser /> 1. Profile
+            <FaUser /> Profile
           </a>
         </Link>
       </div>
@@ -19,9 +19,7 @@ export const Sidebar = ({ hundle, username, id }: SidebarProps) => {
         {hundle !== undefined ? (
           <div className="you">
             <b>{hundle}</b> <br />
-            <Link href={`user/${id}`}>
-              <a>@{username}</a>
-            </Link>
+            {username}
           </div>
         ) : (
           <></>

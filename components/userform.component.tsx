@@ -4,7 +4,7 @@ import { useCeramicContext } from "../context";
 
 import { Profile } from "../types";
 
-import styles from "../styles/profile.module.scss";
+import styles from "@/styles/profile.module.scss";
 
 export const Userform = () => {
   const clients = useCeramicContext();
@@ -45,7 +45,7 @@ export const Userform = () => {
     if (ceramic.did !== undefined) {
       const update = await composeClient.executeQuery(`
         mutation {
-          createBasicProfile(input: {
+          createUserProfile(input: {
             content: {
                 username: "${profile?.username}"
                 description: "${profile?.description}"
@@ -55,7 +55,6 @@ export const Userform = () => {
           }) 
           {
             document {
-             
               username
               description
               hundle
