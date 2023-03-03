@@ -2,7 +2,7 @@
   "anchor": {},
   "http-api": {
     "cors-allowed-origins": [".*"],
-    "admin-dids": []
+    "admin-dids": ["did:key:z6MkkQeMV6oUkqdLxcx8uR5XVGPd7SyAnHVyhQ2dXrz5ivXc"]
   },
   "ipfs": { "mode": "bundled" },
   "logger": { "log-level": 2, "log-to-files": false },
