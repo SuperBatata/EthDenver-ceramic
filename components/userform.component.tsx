@@ -12,6 +12,9 @@ export const Userform = () => {
 
   const [profile, setProfile] = useState<Profile | undefined>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>("");
+  const [hundle, setHundle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
 
   const handleLogin = async () => {
     await authenticateCeramic(ceramic, composeClient);
@@ -19,24 +22,27 @@ export const Userform = () => {
   };
 
   const getProfile = async () => {
-    setLoading(true);
     if (ceramic.did !== undefined) {
       const profile = await composeClient.executeQuery(`
-        query {
-          viewer {
-            userProfile {
-              id
-              username
-              description
-              hundle
-            }
-          }
-        }
+      query {
+  userProfileIndex(first: 1) {
+    edges {
+      node {
+        username
+        hundle
+        description
+      }
+    }
+  }}
       `);
-      console.log(profile);
-
+      console.log("thisprofile", profile);
+      setUsername(profile?.data?.userProfileIndex?.edges[0]?.node?.username);
+      setHundle(profile?.data?.userProfileIndex?.edges[0]?.node?.hundle);
+      setDescription(
+        profile?.data?.userProfileIndex?.edges[0]?.node?.description
+      );
+      console.log(username, hundle, description);
       setProfile(profile?.data?.viewer?.userProfile);
-      setLoading(false);
     }
   };
 
@@ -45,7 +51,7 @@ export const Userform = () => {
     if (ceramic.did !== undefined) {
       const update = await composeClient.executeQuery(`
         mutation {
-          createUserProfile(input: {
+          createuserProfile(input: {
             content: {
                 username: "${profile?.username}"
                 description: "${profile?.description}"
@@ -55,6 +61,7 @@ export const Userform = () => {
           }) 
           {
             document {
+             
               username
               description
               hundle
@@ -62,6 +69,7 @@ export const Userform = () => {
           }
         }
       `);
+      console.log(update);
       await getProfile();
       setLoading(false);
     }
@@ -126,10 +134,20 @@ export const Userform = () => {
               >
                 {loading ? "Loading..." : "Update Profile"}
               </button>
+              <button
+                onClick={() => {
+                  getProfile();
+                }}
+              >
+                {loading ? "Loading..." : "get Profile"}
+              </button>
             </div>
           </div>
         </div>
       )}
+      <h1>{username}</h1>
+      <h1>{hundle}</h1>
+      <h1>{description}</h1>
     </>
   );
 };
