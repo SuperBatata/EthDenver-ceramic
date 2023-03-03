@@ -4,6 +4,8 @@ import { CeramicWrapper } from "../context";
 import { useState, useEffect } from "react";
 import { useCeramicContext } from "../context";
 import { authenticateCeramic } from "../utils";
+import { Sidebar } from "../components/sidebar.component";
+import { Footer } from "../components/footer.component";
 
 type Profile = {
   id?: any;
@@ -51,7 +53,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <div className="container">
       <CeramicWrapper>
         <Sidebar
-          name={profile?.name}
+          hundle={profile?.hundle}
           username={profile?.username}
           id={profile?.id}
         />
@@ -63,4 +65,3 @@ export default function App({ Component, pageProps }: AppProps) {
     </div>
   );
 }
-

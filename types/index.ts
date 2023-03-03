@@ -4,3 +4,8 @@ export type Profile = {
   description?: string;
   hundle?: string;
 };
+export type SidebarProps = {
+  hundle?: string;
+  username?: string;
+  id?: string;
+};
