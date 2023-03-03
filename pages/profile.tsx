@@ -10,6 +10,16 @@ const ProfilePage: NextPage = () => {
         <title>Profile</title>
       </Head>
       <div className="content">
+        <h1
+          style={{
+            fontSize: "2rem",
+            fontWeight: 600,
+            marginBottom: "1rem",
+            textAlign: "center",
+          }}
+        >
+          update your profile
+        </h1>
         <div>
           <Userform />
         </div>

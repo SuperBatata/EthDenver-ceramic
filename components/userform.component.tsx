@@ -24,17 +24,17 @@ export const Userform = () => {
   const getProfile = async () => {
     if (ceramic.did !== undefined) {
       const profile = await composeClient.executeQuery(`
-      query {
-  userProfileIndex(first: 1) {
-    edges {
-      node {
-        username
-        hundle
-        description
-      }
+
+query  {
+  viewer {
+    userProfile {
+      description
+      hundle
+      username
     }
-  }}
-      `);
+    isViewer
+  }
+}      `);
       console.log("thisprofile", profile);
       setUsername(profile?.data?.userProfileIndex?.edges[0]?.node?.username);
       setHundle(profile?.data?.userProfileIndex?.edges[0]?.node?.hundle);
@@ -131,12 +131,22 @@ export const Userform = () => {
                 onClick={() => {
                   updateProfile();
                 }}
+                style={{
+                  width: "90px",
+                  height: "50px",
+                  margin: "10px",
+                }}
               >
                 {loading ? "Loading..." : "Update Profile"}
               </button>
               <button
                 onClick={() => {
                   getProfile();
+                }}
+                style={{
+                  width: "90px",
+                  height: "50px",
+                  margin: "10px",
                 }}
               >
                 {loading ? "Loading..." : "get Profile"}
@@ -145,9 +155,29 @@ export const Userform = () => {
           </div>
         </div>
       )}
-      <h1>{username}</h1>
-      <h1>{hundle}</h1>
-      <h1>{description}</h1>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          height: "100%",
+          backgroundColor: "white",
+          color: "black",
+          fontSize: "1.5rem",
+          fontWeight: 600,
+          padding: "1rem",
+          borderRadius: "0.5rem",
+          boxShadow: "0 0 0.5rem 0.5rem rgba(0, 0, 0, 0.1)",
+          margin: "1rem",
+        }}
+      >
+        <h1>Profile Data</h1>
+        <p>handle: {profile?.hundle}</p>
+        <p>Username: {profile?.username}</p>
+        <p>Description: {profile?.description}</p>
+      </div>
     </>
   );
 };
