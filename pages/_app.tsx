@@ -9,9 +9,11 @@ import { Footer } from "../components/footer.component";
 
 type Profile = {
   id?: any;
-  username?: string;
-  description?: string;
-  hundle?: string;
+  name?: string;
+  email?: string;
+  twitter_handle?: string;
+  discord_handle?: string;
+  telegram_handle?: string;
 };
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -30,7 +32,11 @@ export default function App({ Component, pageProps }: AppProps) {
             id
             userProfile {
               id
-              username
+              email
+              name
+              twitter_handle
+              discord_handle
+              telegram_handle
             }
           }
         }
@@ -53,13 +59,12 @@ export default function App({ Component, pageProps }: AppProps) {
     <div className="container">
       <CeramicWrapper>
         <Sidebar
-          hundle={profile?.hundle}
-          username={profile?.username}
+          hundle={profile?.twitter_handle}
+          username={profile?.name}
           id={profile?.id}
         />
         <div className="body">
           <Component {...pageProps} ceramic />
-          <Footer />
         </div>
       </CeramicWrapper>
     </div>

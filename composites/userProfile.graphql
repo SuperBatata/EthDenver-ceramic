@@ -1,6 +1,8 @@
 type userProfile
-  @createModel(accountRelation: SINGLE, description: "A Profile for a user") {
-  username: String! @string(minLength: 5, maxLength: 255)
-  description: String @string(minLength: 3, maxLength: 100)
-  hundle: String @string(minLength: 3, maxLength: 50)
+  @createModel(accountRelation: SINGLE, description: "Walt.id xyz") {
+  email: String @string(minLength: 7, maxLength: 25)
+  name: String @string(minLength: 3, maxLength: 20)
+  twitter_handle: String @string(minLength: 3, maxLength: 50)
+  discord_handle: String @string(minLength: 3, maxLength: 50)
+  telegram_handle: String @string(minLength: 3, maxLength: 50)
 }

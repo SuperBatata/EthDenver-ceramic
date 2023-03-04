@@ -12,9 +12,6 @@ export const Userform = () => {
 
   const [profile, setProfile] = useState<Profile | undefined>();
   const [loading, setLoading] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>("");
-  const [hundle, setHundle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
 
   const handleLogin = async () => {
     await authenticateCeramic(ceramic, composeClient);
@@ -28,20 +25,18 @@ export const Userform = () => {
 query  {
   viewer {
     userProfile {
-      description
-      hundle
-      username
+      id
+      name
+      email
+      twitter_handle
+      discord_handle
+      telegram_handle
     }
     isViewer
   }
 }      `);
       console.log("thisprofile", profile);
-      setUsername(profile?.data?.userProfileIndex?.edges[0]?.node?.username);
-      setHundle(profile?.data?.userProfileIndex?.edges[0]?.node?.hundle);
-      setDescription(
-        profile?.data?.userProfileIndex?.edges[0]?.node?.description
-      );
-      console.log(username, hundle, description);
+
       setProfile(profile?.data?.viewer?.userProfile);
     }
   };
@@ -53,18 +48,22 @@ query  {
         mutation {
           createuserProfile(input: {
             content: {
-                username: "${profile?.username}"
-                description: "${profile?.description}"
-                hundle: "${profile?.hundle}"
+                name: "${profile?.name}"
+                email: "${profile?.email}"
+                twitter_handle: "${profile?.twitter_handle}"
+                discord_handle: "${profile?.discord_handle}"
+                telegram_handle: "${profile?.telegram_handle}"
            
             }
           }) 
           {
             document {
              
-              username
-              description
-              hundle
+              name
+              email
+              twitter_handle
+              discord_handle
+              telegram_handle
             }
           }
         }
@@ -95,37 +94,57 @@ query  {
         <div className="content">
           <div className={styles.formGroup}>
             <div className="">
-              <label className="">handler</label>
+              <label className="">name</label>
               <input
                 className=""
                 type="text"
-                defaultValue={profile?.hundle || ""}
+                defaultValue={profile?.name || ""}
                 onChange={(e) => {
-                  setProfile({ ...profile, hundle: e.target.value });
+                  setProfile({ ...profile, name: e.target.value });
                 }}
               />
             </div>
             <div className="">
-              <label>Username (at least 6 characters) </label>
+              <label> email </label>
               <input
                 type="text"
-                defaultValue={profile?.username || ""}
+                defaultValue={profile?.email || ""}
                 onChange={(e) => {
-                  setProfile({ ...profile, username: e.target.value });
+                  setProfile({ ...profile, email: e.target.value });
                 }}
               />
             </div>
             <div className="">
-              <label>Description</label>
+              <label>twitter handle</label>
               <input
                 type="text"
-                defaultValue={profile?.description || ""}
+                defaultValue={profile?.twitter_handle || ""}
                 onChange={(e) => {
-                  setProfile({ ...profile, description: e.target.value });
+                  setProfile({ ...profile, twitter_handle: e.target.value });
+                }}
+              />
+            </div>
+            <div className="">
+              <label>discord handle</label>
+              <input
+                type="text"
+                defaultValue={profile?.discord_handle || ""}
+                onChange={(e) => {
+                  setProfile({ ...profile, discord_handle: e.target.value });
                 }}
               />
             </div>
 
+            <div className="">
+              <label>telegram handle</label>
+              <input
+                type="text"
+                defaultValue={profile?.telegram_handle || ""}
+                onChange={(e) => {
+                  setProfile({ ...profile, telegram_handle: e.target.value });
+                }}
+              />
+            </div>
             <div className="">
               <button
                 onClick={() => {
@@ -174,9 +193,11 @@ query  {
         }}
       >
         <h1>Profile Data</h1>
-        <p>handle: {profile?.hundle}</p>
-        <p>Username: {profile?.username}</p>
-        <p>Description: {profile?.description}</p>
+        <p>Name: {profile?.name}</p>
+        <p>Email: {profile?.email}</p>
+        <p>Twitter: {profile?.twitter_handle}</p>
+        <p>Discord: {profile?.discord_handle}</p>
+        <p>Telegram: {profile?.telegram_handle}</p>
       </div>
     </>
   );

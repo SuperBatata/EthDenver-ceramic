@@ -1,8 +1,10 @@
 export type Profile = {
   id?: any;
-  username?: string;
-  description?: string;
-  hundle?: string;
+  name?: string;
+  email?: string;
+  twitter_handle?: string;
+  discord_handle?: string;
+  telegram_handle?: string;
 };
 export type SidebarProps = {
   hundle?: string;
