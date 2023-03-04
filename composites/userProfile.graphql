@@ -5,4 +5,5 @@ type userProfile
   twitter_handle: String @string(minLength: 3, maxLength: 50)
   discord_handle: String @string(minLength: 3, maxLength: 50)
   telegram_handle: String @string(minLength: 3, maxLength: 50)
+  vc: String @string(maxLength: 5000)
 }

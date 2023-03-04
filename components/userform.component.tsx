@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { authenticateCeramic } from "../utils";
 import { useCeramicContext } from "../context";
-
+import axios from "axios";
 import { Profile } from "../types";
 
 import styles from "@/styles/profile.module.scss";
@@ -12,6 +12,13 @@ export const Userform = () => {
 
   const [profile, setProfile] = useState<Profile | undefined>();
   const [loading, setLoading] = useState<boolean>(false);
+
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [twitter_handle, setTwitter_handle] = useState<string>("");
+  const [discord_handle, setDiscord_handle] = useState<string>("");
+  const [telegram_handle, setTelegram_handle] = useState<string>("");
+  const [vc, setVc] = useState<string>("");
 
   const handleLogin = async () => {
     await authenticateCeramic(ceramic, composeClient);
@@ -31,6 +38,7 @@ query  {
       twitter_handle
       discord_handle
       telegram_handle
+      vc
     }
     isViewer
   }
@@ -38,11 +46,59 @@ query  {
       console.log("thisprofile", profile);
 
       setProfile(profile?.data?.viewer?.userProfile);
+      setName(profile?.data?.viewer?.userProfile?.name);
+      setEmail(profile?.data?.viewer?.userProfile?.email);
+      setTwitter_handle(profile?.data?.viewer?.userProfile?.twitter_handle);
+      setDiscord_handle(profile?.data?.viewer?.userProfile?.discord_handle);
+      setTelegram_handle(profile?.data?.viewer?.userProfile?.telegram_handle);
     }
+  };
+
+  const generateVC = async () => {
+    const did = ceramic.did?.id;
+    console.log("haaadid", did);
+    const res = await axios
+      .post(
+        "https://signatory.ssikit.walt.id/v1/credentials/issue",
+        {
+          templateId: "VerifiableId",
+          config: {
+            issuerDid:
+              "did:key:z6MkuUjqQWMdisCbvmbPZLnJ3XQ8tLLauxMSaX5myq5as2oL",
+            subjectDid: did,
+            proofType: "JWT",
+          },
+          credentialData: {
+            credentialSubject: {
+              twitterHandle: `${profile?.twitter_handle}`,
+              discordHandle: `${profile?.discord_handle}`,
+              telegramHandle: `${profile?.telegram_handle}`,
+              email: `${profile?.email}`,
+              name: `${profile?.name}`,
+            },
+          },
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        if (res.status === 200 && ceramic.did !== undefined) {
+          console.log(res.data);
+          const vc = res.data;
+          setVc(vc);
+        }
+      });
   };
 
   const updateProfile = async () => {
     setLoading(true);
+
+    await generateVC();
+
+    console.log("vc", vc);
     if (ceramic.did !== undefined) {
       const update = await composeClient.executeQuery(`
         mutation {
@@ -53,12 +109,13 @@ query  {
                 twitter_handle: "${profile?.twitter_handle}"
                 discord_handle: "${profile?.discord_handle}"
                 telegram_handle: "${profile?.telegram_handle}"
-           
+                vc: "${vc}"
+
             }
-          }) 
+          })
           {
             document {
-             
+
               name
               email
               twitter_handle
@@ -69,6 +126,7 @@ query  {
         }
       `);
       console.log(update);
+
       await getProfile();
       setLoading(false);
     }
@@ -169,6 +227,18 @@ query  {
                 }}
               >
                 {loading ? "Loading..." : "get Profile"}
+              </button>
+              <button
+                onClick={() => {
+                  generateVC();
+                }}
+                style={{
+                  width: "90px",
+                  height: "50px",
+                  margin: "10px",
+                }}
+              >
+                Generate VC
               </button>
             </div>
           </div>

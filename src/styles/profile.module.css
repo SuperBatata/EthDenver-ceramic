@@ -1,0 +1,18 @@
+.formGroup {
+  margin-bottom: 10px;
+  font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.formGroup label {
+  display: block;
+  padding-bottom: 3px;
+}
+.formGroup input {
+  border: 2px solid black;
+  color: #fff;
+  border-radius: 5px;
+  font-size: 16px;
+  padding: 5px 15px;
+}/*# sourceMappingURL=profile.module.css.map */
